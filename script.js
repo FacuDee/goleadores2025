@@ -3,7 +3,7 @@ class GoleadoresApp {
         this.data = null;
         this.partidoActual = [];
         this.isAdminAuthenticated = false;
-        this.adminPassword = 'chichoneta2025'; // Cambia esta contraseña por la que prefieras
+        this.adminPassword = 'goldechicho2025'; // Cambia esta contraseña por la que prefieras
         this.init();
     }
 
