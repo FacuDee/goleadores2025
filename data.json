@@ -1,0 +1,55 @@
+{
+  "jugadores": [
+    {"id": 1, "nombre": "Fredy el optimista del gol", "goles": 45},
+    {"id": 2, "nombre": "La Rata", "goles": 44},
+    {"id": 3, "nombre": "Pablito", "goles": 32},
+    {"id": 4, "nombre": "Facu", "goles": 27},
+    {"id": 5, "nombre": "Juan cono naranja", "goles": 21},
+    {"id": 6, "nombre": "Seba peluquería", "goles": 17},
+    {"id": 7, "nombre": "Atilio", "goles": 15},
+    {"id": 8, "nombre": "Cachi", "goles": 13},
+    {"id": 9, "nombre": "Luisito", "goles": 13},
+    {"id": 10, "nombre": "Lucho", "goles": 12},
+    {"id": 11, "nombre": "Eze", "goles": 10},
+    {"id": 12, "nombre": "Elías hijo de Claudio", "goles": 9},
+    {"id": 13, "nombre": "Claudio", "goles": 9},
+    {"id": 14, "nombre": "Nico Adorno", "goles": 8},
+    {"id": 15, "nombre": "Cristian U.", "goles": 7},
+    {"id": 16, "nombre": "Martin", "goles": 6},
+    {"id": 17, "nombre": "Marcos el hacha", "goles": 5},
+    {"id": 18, "nombre": "Santino", "goles": 5},
+    {"id": 19, "nombre": "Santiago Rochita", "goles": 5},
+    {"id": 20, "nombre": "Guille", "goles": 4},
+    {"id": 21, "nombre": "Néstor", "goles": 4},
+    {"id": 22, "nombre": "Agus", "goles": 4},
+    {"id": 23, "nombre": "Adriano", "goles": 4},
+    {"id": 24, "nombre": "Kuki", "goles": 3},
+    {"id": 25, "nombre": "Dario la pantera", "goles": 3},
+    {"id": 26, "nombre": "Ema capitan", "goles": 2},
+    {"id": 27, "nombre": "Luis", "goles": 2},
+    {"id": 28, "nombre": "Nacho", "goles": 2},
+    {"id": 29, "nombre": "Carlos", "goles": 2},
+    {"id": 30, "nombre": "Pancho", "goles": 2},
+    {"id": 31, "nombre": "Ema (2)", "goles": 2},
+    {"id": 32, "nombre": "Juan Celis", "goles": 1},
+    {"id": 33, "nombre": "Nico", "goles": 1},
+    {"id": 34, "nombre": "Nicolás Suárez", "goles": 1},
+    {"id": 35, "nombre": "Fermín", "goles": 1},
+    {"id": 36, "nombre": "Dieguito", "goles": 1},
+    {"id": 37, "nombre": "Rodrigo", "goles": 1},
+    {"id": 38, "nombre": "Charly", "goles": 1},
+    {"id": 39, "nombre": "Cristian Dc.", "goles": 1},
+    {"id": 40, "nombre": "Ruso", "goles": 1}
+  ],
+  "partidos": [
+    {
+      "id": 1,
+      "fecha": "2025-10-06",
+      "goleadores": []
+    }
+  ],
+  "configuracion": {
+    "ultimoPartido": 1,
+    "proximoPartido": "2025-10-13"  
+  }
+}

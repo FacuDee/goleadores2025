@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goleadores 2025 - Ranking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1>Goleadores 2025</h1>
+                <button id="theme-toggle" class="theme-toggle" title="Cambiar tema">
+                    <svg class="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Icono de luna (modo claro) -->
+                        <path class="moon-icon" d="M21 12.79A9 9 0 1 1 11.21 3A7 7 0 0 0 21 12.79z"></path>
+                        <!-- Icono de sol (modo oscuro) -->
+                        <circle class="sun-icon" cx="12" cy="12" r="5" style="display: none;"></circle>
+                        <line class="sun-icon" x1="12" y1="1" x2="12" y2="3" style="display: none;"></line>
+                        <line class="sun-icon" x1="12" y1="21" x2="12" y2="23" style="display: none;"></line>
+                        <line class="sun-icon" x1="4.22" y1="4.22" x2="5.64" y2="5.64" style="display: none;"></line>
+                        <line class="sun-icon" x1="18.36" y1="18.36" x2="19.78" y2="19.78" style="display: none;"></line>
+                        <line class="sun-icon" x1="1" y1="12" x2="3" y2="12" style="display: none;"></line>
+                        <line class="sun-icon" x1="21" y1="12" x2="23" y2="12" style="display: none;"></line>
+                        <line class="sun-icon" x1="4.22" y1="19.78" x2="5.64" y2="18.36" style="display: none;"></line>
+                        <line class="sun-icon" x1="18.36" y1="5.64" x2="19.78" y2="4.22" style="display: none;"></line>
+                    </svg>
+                </button>
+            </div>
+            <nav>
+                <button id="btn-ranking" class="nav-btn active">Ranking</button>
+                <button id="btn-admin" class="nav-btn">Admin</button>
+            </nav>
+        </header>
+
+        <!-- Sección Ranking -->
+        <section id="ranking-section" class="section active">
+            <div class="stats-header">
+                <div class="stat-card">
+                    <span class="stat-number" id="total-jugadores">0</span>
+                    <span class="stat-label">Jugadores</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="total-goles">0</span>
+                    <span class="stat-label">Goles Totales</span>
+                </div>
+            </div>
+
+            <!-- Panel del último partido -->
+            <div id="ultimo-partido-panel" class="ultimo-partido-panel">
+                <h3>Último Partido - North Park</h3>
+                <div class="partido-info">
+                    <div class="fecha-partido">
+                        <span id="fecha-ultimo-partido">-</span>
+                    </div>
+                    <div class="resultado-partido">
+                        <div class="equipo">
+                            <div class="nombre-equipo">Defensores del Arroyo</div>
+                            <div class="goles-equipo" id="goles-arroyo">0</div>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="equipo">
+                            <div class="nombre-equipo">Defensores del Parque</div>
+                            <div class="goles-equipo" id="goles-parque">0</div>
+                        </div>
+                    </div>
+                    <div class="goleadores-partido" id="goleadores-partido">
+                        <!-- Los goleadores del último partido se mostrarán aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="ranking-container">
+                <h2>Tabla de Goleadores</h2>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Buscar jugador...">
+                </div>
+                <div id="ranking-list" class="ranking-list">
+                    <!-- Los jugadores se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Admin -->
+        <section id="admin-section" class="section">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <h2>Panel de Administración</h2>
+                    <button id="btn-logout" class="btn-logout">Cerrar Sesión</button>
+                </div>
+                
+                <div class="admin-card">
+                    <h3>Registrar Partido del Domingo - North Park</h3>
+                    <div class="fecha-container">
+                        <label for="fecha-partido">Fecha del partido:</label>
+                        <input type="date" id="fecha-partido">
+                    </div>
+                    
+                    <div class="goles-container">
+                        <h4>Goles del partido</h4>
+                        <div class="equipos-resultado">
+                            <div class="equipo-admin">
+                                <h5>Defensores del Arroyo</h5>
+                                <div class="goles-equipo-admin" id="goles-arroyo-admin">0</div>
+                                <div class="goleadores-equipo" id="goleadores-arroyo-admin"></div>
+                            </div>
+                            <div class="vs-admin">VS</div>
+                            <div class="equipo-admin">
+                                <h5>Defensores del Parque</h5>
+                                <div class="goles-equipo-admin" id="goles-parque-admin">0</div>
+                                <div class="goleadores-equipo" id="goleadores-parque-admin"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="add-gol-container">
+                            <select id="jugador-select">
+                                <option value="">Seleccionar jugador...</option>
+                            </select>
+                            <select id="equipo-select">
+                                <option value="">Seleccionar equipo...</option>
+                                <option value="arroyo">Defensores del Arroyo</option>
+                                <option value="parque">Defensores del Parque</option>
+                            </select>
+                            <button id="btn-add-gol" class="btn-primary">+ Agregar Gol</button>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-actions">
+                        <button id="btn-save-partido" class="btn-success">Guardar Partido</button>
+                        <button id="btn-clear-partido" class="btn-warning">Limpiar Partido</button>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3>Gestión Manual</h3>
+                    <p class="admin-description">Ajustar goles individualmente si es necesario</p>
+                    
+                    <div class="manual-gol-container">
+                        <select id="jugador-manual-select">
+                            <option value="">Seleccionar jugador...</option>
+                        </select>
+                        <div class="gol-controls">
+                            <button id="btn-remove-gol" class="btn-danger">-1 Gol</button>
+                            <button id="btn-add-manual-gol" class="btn-success">+1 Gol</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <h3>Confirmar acción</h3>
+            <p id="modal-message"></p>
+            <div class="modal-actions">
+                <button id="btn-cancel" class="btn-secondary">Cancelar</button>
+                <button id="btn-confirm" class="btn-primary">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de login para admin -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h3>Acceso de Administrador</h3>
+            <p>Ingresa la contraseña para acceder al panel de administración:</p>
+            <div class="login-form">
+                <input type="password" id="admin-password" placeholder="Contraseña..." autocomplete="current-password">
+                <div class="login-error" id="login-error" style="display: none;">
+                    Contraseña incorrecta. Inténtalo de nuevo.
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="btn-login-cancel" class="btn-secondary">Cancelar</button>
+                <button id="btn-login-confirm" class="btn-primary">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón scroll to top -->
+    <button id="scroll-to-top" class="scroll-to-top" title="Volver arriba">
+        <span class="scroll-icon">↑</span>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
