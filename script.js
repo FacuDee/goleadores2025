@@ -177,9 +177,12 @@ class GoleadoresApp {
 
     async saveData() {
         try {
-            // Guardar en localStorage del navegador para persistencia
+            // Guardar en localStorage del navegador para persistencia local
             localStorage.setItem('goleadores-2025-data', JSON.stringify(this.data));
             console.log('Datos guardados en localStorage:', this.data);
+            
+            // Intentar guardar en Google Sheets
+            await this.saveToGoogleSheets();
             
             this.showNotification('Datos guardados correctamente', 'success');
             
@@ -193,6 +196,35 @@ class GoleadoresApp {
             console.error('Error guardando datos:', error);
             this.showNotification('Error al guardar los datos', 'error');
             return false;
+        }
+    }
+
+    async saveToGoogleSheets() {
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxUDnvCtFLpcb2bSOT3wof96OAJaxHKacyidheziHXx05DryVq8GS-zKQq7al1Ha2d4/exec';
+        
+        try {
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.data)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            console.log('Datos guardados en Google Sheets:', result);
+            
+            if (!result.success) {
+                throw new Error(result.error || 'Error desconocido al guardar en Google Sheets');
+            }
+            
+        } catch (error) {
+            console.warn('Error guardando en Google Sheets:', error);
+            // No lanzamos el error para que no falle completamente el guardado local
         }
     }
 
