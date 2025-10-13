@@ -202,6 +202,9 @@ class GoleadoresApp {
     async saveToGoogleSheets() {
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxUDnvCtFLpcb2bSOT3wof96OAJaxHKacyidheziHXx05DryVq8GS-zKQq7al1Ha2d4/exec';
         
+        console.log('🔄 Intentando guardar en Google Sheets...');
+        console.log('📊 Datos a enviar:', this.data);
+        
         try {
             const response = await fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
@@ -211,19 +214,27 @@ class GoleadoresApp {
                 body: JSON.stringify(this.data)
             });
             
+            console.log('📡 Respuesta del servidor:', response.status, response.statusText);
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('❌ Error response body:', errorText);
+                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
             }
             
             const result = await response.json();
-            console.log('Datos guardados en Google Sheets:', result);
+            console.log('✅ Datos guardados en Google Sheets:', result);
             
             if (!result.success) {
                 throw new Error(result.error || 'Error desconocido al guardar en Google Sheets');
             }
             
+            // Mostrar notificación adicional de éxito
+            this.showNotification('Sincronizado con Google Sheets', 'success');
+            
         } catch (error) {
-            console.warn('Error guardando en Google Sheets:', error);
+            console.error('❌ Error guardando en Google Sheets:', error);
+            this.showNotification('Error de sincronización - datos guardados localmente', 'warning');
             // No lanzamos el error para que no falle completamente el guardado local
         }
     }
