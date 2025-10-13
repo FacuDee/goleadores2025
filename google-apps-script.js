@@ -1,20 +1,10 @@
 // Google Apps Script para actualizar Google Sheets
 const SHEET_ID = '1NATfltQLyUKfRvyX1acz8qQYnkqjLy2kAy4IoLvVUYk';
 
-// Manejar peticiones OPTIONS (preflight) para CORS
-function doOptions(e) {
-  return ContentService
-    .createTextOutput('')
-    .setMimeType(ContentService.MimeType.TEXT)
-    .setHeaders({
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Max-Age': '86400'
-    });
-}
-
 function doPost(e) {
+  // En Google Apps Script, CORS se maneja automáticamente para aplicaciones web
+  // cuando se configura como "Cualquier persona" en el deployment
+  
   try {
     // Parsear los datos recibidos
     const data = JSON.parse(e.postData.contents);
@@ -37,22 +27,12 @@ function doPost(e) {
     
     return ContentService
       .createTextOutput(JSON.stringify({success: true, message: 'Datos actualizados correctamente'}))
-      .setMimeType(ContentService.MimeType.JSON)
-      .setHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-      });
+      .setMimeType(ContentService.MimeType.JSON);
       
   } catch (error) {
     return ContentService
       .createTextOutput(JSON.stringify({success: false, error: error.toString()}))
-      .setMimeType(ContentService.MimeType.JSON)
-      .setHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-      });
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
@@ -113,14 +93,9 @@ function updateConfiguracion(spreadsheet, configuracion) {
   });
 }
 
-// Función GET con headers CORS
+// Función GET simple
 function doGet(e) {
   return ContentService
     .createTextOutput('Goleadores 2025 API funcionando')
-    .setMimeType(ContentService.MimeType.TEXT)
-    .setHeaders({
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    });
+    .setMimeType(ContentService.MimeType.TEXT);
 }

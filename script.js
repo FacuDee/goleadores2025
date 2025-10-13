@@ -200,7 +200,7 @@ class GoleadoresApp {
     }
 
     async saveToGoogleSheets() {
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfiFZknZlO3JGPaoYcFKcLHBPq-Ni6q3vc_V2oRjpgXstEn6EH1U-36F4melR3ZvV-/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8RTZEcAnWsCENjWs9PqCkRI39tLBNegpkDbtFHL7OxVbJHMhDwuPVvRfLpCIugwaX/exec';
         
         console.log('🔄 Intentando guardar en Google Sheets...');
         console.log('📊 Datos a enviar:', this.data);
