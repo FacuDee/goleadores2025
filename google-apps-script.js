@@ -2,12 +2,38 @@
 const SHEET_ID = '1NATfltQLyUKfRvyX1acz8qQYnkqjLy2kAy4IoLvVUYk';
 
 function doPost(e) {
-  // En Google Apps Script, CORS se maneja automáticamente para aplicaciones web
-  // cuando se configura como "Cualquier persona" en el deployment
-  
   try {
     // Parsear los datos recibidos
     const data = JSON.parse(e.postData.contents);
+    return processData(data);
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({success: false, error: error.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  // Manejar tanto peticiones GET simples como con datos
+  if (e.parameter.data) {
+    try {
+      const data = JSON.parse(decodeURIComponent(e.parameter.data));
+      return processData(data);
+    } catch (error) {
+      return ContentService
+        .createTextOutput(JSON.stringify({success: false, error: error.toString()}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+  
+  // Respuesta simple para verificar que funciona
+  return ContentService
+    .createTextOutput('Goleadores 2025 API funcionando')
+    .setMimeType(ContentService.MimeType.TEXT);
+}
+
+function processData(data) {
+  try {
     const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
     
     // Actualizar jugadores
@@ -93,9 +119,3 @@ function updateConfiguracion(spreadsheet, configuracion) {
   });
 }
 
-// Función GET simple
-function doGet(e) {
-  return ContentService
-    .createTextOutput('Goleadores 2025 API funcionando')
-    .setMimeType(ContentService.MimeType.TEXT);
-}

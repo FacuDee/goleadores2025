@@ -200,18 +200,18 @@ class GoleadoresApp {
     }
 
     async saveToGoogleSheets() {
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8RTZEcAnWsCENjWs9PqCkRI39tLBNegpkDbtFHL7OxVbJHMhDwuPVvRfLpCIugwaX/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtRn6Res9oAEGfZY5sdgS0BS-WsqSJxVXvA9uEHWyd18ssW7H-1SDqBI8e5uAlbkVI/exec';
         
         console.log('🔄 Intentando guardar en Google Sheets...');
         console.log('📊 Datos a enviar:', this.data);
         
         try {
-            const response = await fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(this.data)
+            // Usar GET con parámetros para evitar problemas de CORS
+            const dataString = encodeURIComponent(JSON.stringify(this.data));
+            const url = `${APPS_SCRIPT_URL}?data=${dataString}`;
+            
+            const response = await fetch(url, {
+                method: 'GET'
             });
             
             console.log('📡 Respuesta del servidor:', response.status, response.statusText);
