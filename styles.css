@@ -5,36 +5,36 @@
 :root,
 :root[data-theme="light"] {
     /* Tema Claro */
-    --bg-gradient-start: #f5f7fa;
-    --bg-gradient-end: #c3cfe2;
-    --bg-primary: #ffffff;
-    --bg-secondary: #f9f9f9;
-    --bg-tertiary: #f0f0f0;
-    
-    --text-primary: #213547;
-    --text-secondary: #4a5568;
-    --text-tertiary: #718096;
-    
-    --border-primary: #e0e0e0;
-    --border-secondary: #d0d0d0;
-    
-    --shadow-light: rgba(0, 0, 0, 0.08);
-    --shadow-medium: rgba(0, 0, 0, 0.12);
-    
+    --bg-gradient-start: #e3f0fa;
+    --bg-gradient-end: #b3d4f7;
+    --bg-primary: #f0f7fc;
+    --bg-secondary: #d6e9f7;
+    --bg-tertiary: #c2dbf0;
+
+    --text-primary: #1a2a3a;
+    --text-secondary: #3a5a7a;
+    --text-tertiary: #6b8fbf;
+
+    --border-primary: #b3d4f7;
+    --border-secondary: #a3c9e9;
+
+    --shadow-light: rgba(66, 153, 225, 0.08);
+    --shadow-medium: rgba(66, 153, 225, 0.12);
+
     --accent-primary: #4299e1;
     --accent-success: #38a169;
     --accent-warning: #ed8936;
     --accent-danger: #e53e3e;
-    
+
     --focus-ring: rgba(66, 153, 225, 0.1);
-    --hover-bg: #f0f0f0;
-    
+    --hover-bg: #d6e9f7;
+
     /* Colores específicos para elementos especiales */
     --ranking-title: #4299e1;
-    --admin-title: #213547;
-    --vs-color: #213547;
-    --goleador-text: #213547;
-    
+    --admin-title: #1a2a3a;
+    --vs-color: #1a2a3a;
+    --goleador-text: #1a2a3a;
+
     background-color: var(--bg-primary);
     color: var(--text-primary);
 }
@@ -333,7 +333,7 @@ nav {
 }
 
 .goles-equipo {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--accent-success)
 }
@@ -362,11 +362,12 @@ nav {
 .goleadores-equipo h4 {
     font-size: 0.9rem;
     margin-bottom: 8px;
-    color: var(--text-primary);
+    color: var(--accent-success);
 }
 
 .goleador-item {
     font-size: 0.8rem;
+    font-weight: 600;
     color: var(--goleador-text);
     margin-bottom: 3px;
 }

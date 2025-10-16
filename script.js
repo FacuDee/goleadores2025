@@ -446,16 +446,27 @@ class GoleadoresApp {
 
     renderRanking() {
         const rankingList = document.getElementById('ranking-list');
-        
+        const verMasBtn = document.getElementById('btn-ver-mas');
         // Ordenar jugadores por goles (descendente)
-        const jugadoresOrdenados = [...this.data.jugadores].sort((a, b) => b.goles - a.goles);
-        
+        this.jugadoresOrdenados = [...this.data.jugadores].sort((a, b) => b.goles - a.goles);
+        this.rankingOffset = this.rankingOffset || 0;
         rankingList.innerHTML = '';
-        
-        jugadoresOrdenados.forEach((jugador, index) => {
-            const jugadorElement = this.createJugadorElement(jugador, index + 1);
+        const mostrarHasta = Math.min(this.rankingOffset + 10, this.jugadoresOrdenados.length);
+        for (let i = 0; i < mostrarHasta; i++) {
+            const jugadorElement = this.createJugadorElement(this.jugadoresOrdenados[i], i + 1);
             rankingList.appendChild(jugadorElement);
-        });
+        }
+        // Mostrar/ocultar botón Ver más
+        if (mostrarHasta < this.jugadoresOrdenados.length) {
+            verMasBtn.style.display = 'inline-block';
+            verMasBtn.onclick = () => {
+                this.rankingOffset += 10;
+                this.renderRanking();
+            };
+        } else {
+            verMasBtn.style.display = 'none';
+            verMasBtn.onclick = null;
+        }
     }
 
     createJugadorElement(jugador, posicion) {
@@ -479,13 +490,45 @@ class GoleadoresApp {
     }
 
     filterRanking(searchTerm) {
-        const jugadorItems = document.querySelectorAll('.jugador-item');
-        
-        jugadorItems.forEach(item => {
-            const nombre = item.querySelector('.nombre').textContent.toLowerCase();
-            const matches = nombre.includes(searchTerm.toLowerCase());
-            item.style.display = matches ? 'flex' : 'none';
-        });
+        // Reiniciar offset para búsqueda
+        this.rankingOffset = 0;
+        if (!this.jugadoresOrdenados) {
+            this.jugadoresOrdenados = [...this.data.jugadores].sort((a, b) => b.goles - a.goles);
+        }
+        // Filtrar jugadores
+        this.jugadoresFiltrados = this.jugadoresOrdenados.filter(jugador =>
+            jugador.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        // Renderizar solo los filtrados
+        const rankingList = document.getElementById('ranking-list');
+        rankingList.innerHTML = '';
+        const mostrarHasta = Math.min(this.rankingOffset + 10, this.jugadoresFiltrados.length);
+        for (let i = 0; i < mostrarHasta; i++) {
+            const jugadorElement = this.createJugadorElement(this.jugadoresFiltrados[i], i + 1);
+            rankingList.appendChild(jugadorElement);
+        }
+        // Mostrar/ocultar botón Ver más
+        const verMasBtn = document.getElementById('btn-ver-mas');
+        if (mostrarHasta < this.jugadoresFiltrados.length) {
+            verMasBtn.style.display = 'inline-block';
+            verMasBtn.onclick = () => {
+                this.rankingOffset += 10;
+                // Renderizar más filtrados
+                rankingList.innerHTML = '';
+                const nuevoHasta = Math.min(this.rankingOffset + 10, this.jugadoresFiltrados.length);
+                for (let i = 0; i < nuevoHasta; i++) {
+                    const jugadorElement = this.createJugadorElement(this.jugadoresFiltrados[i], i + 1);
+                    rankingList.appendChild(jugadorElement);
+                }
+                if (nuevoHasta >= this.jugadoresFiltrados.length) {
+                    verMasBtn.style.display = 'none';
+                    verMasBtn.onclick = null;
+                }
+            };
+        } else {
+            verMasBtn.style.display = 'none';
+            verMasBtn.onclick = null;
+        }
     }
 
     updateStats() {
