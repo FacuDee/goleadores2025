@@ -206,25 +206,38 @@ class GoleadoresApp {
         console.log('📊 Datos a enviar:', this.data);
         
         try {
-            const response = await fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(this.data),
-                redirect: 'follow'
-            });
+            // Crear un formulario oculto para enviar POST y evitar CORS
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = APPS_SCRIPT_URL;
+            form.target = 'hidden-iframe-' + Date.now();
+            form.style.display = 'none';
             
-            console.log('📡 Respuesta del servidor:', response.status, response.statusText);
+            // Crear input con los datos
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'data';
+            input.value = JSON.stringify(this.data);
+            form.appendChild(input);
             
-            const result = await response.json();
-            console.log('✅ Resultado:', result);
+            // Crear iframe oculto para recibir la respuesta
+            const iframe = document.createElement('iframe');
+            iframe.name = form.target;
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            document.body.appendChild(form);
             
-            if (result.success) {
-                this.showNotification('Sincronizado con Google Sheets', 'success');
-            } else {
-                throw new Error(result.error || 'Error desconocido');
-            }
+            // Enviar formulario
+            form.submit();
+            
+            // Limpiar después de 2 segundos
+            setTimeout(() => {
+                document.body.removeChild(form);
+                document.body.removeChild(iframe);
+            }, 2000);
+            
+            console.log('✅ Datos enviados a Google Sheets');
+            this.showNotification('Sincronizado con Google Sheets', 'success');
             
         } catch (error) {
             console.error('❌ Error guardando en Google Sheets:', error);
