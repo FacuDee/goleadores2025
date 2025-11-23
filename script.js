@@ -206,31 +206,25 @@ class GoleadoresApp {
         console.log('📊 Datos a enviar:', this.data);
         
         try {
-            // Usar GET con parámetros para evitar problemas de CORS
-            const dataString = encodeURIComponent(JSON.stringify(this.data));
-            const url = `${APPS_SCRIPT_URL}?data=${dataString}`;
-            
-            const response = await fetch(url, {
-                method: 'GET'
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.data),
+                redirect: 'follow'
             });
             
             console.log('📡 Respuesta del servidor:', response.status, response.statusText);
             
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('❌ Error response body:', errorText);
-                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-            }
-            
             const result = await response.json();
-            console.log('✅ Datos guardados en Google Sheets:', result);
+            console.log('✅ Resultado:', result);
             
-            if (!result.success) {
-                throw new Error(result.error || 'Error desconocido al guardar en Google Sheets');
+            if (result.success) {
+                this.showNotification('Sincronizado con Google Sheets', 'success');
+            } else {
+                throw new Error(result.error || 'Error desconocido');
             }
-            
-            // Mostrar notificación adicional de éxito
-            this.showNotification('Sincronizado con Google Sheets', 'success');
             
         } catch (error) {
             console.error('❌ Error guardando en Google Sheets:', error);
