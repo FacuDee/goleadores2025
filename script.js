@@ -206,35 +206,34 @@ class GoleadoresApp {
         console.log('📊 Datos a enviar:', this.data);
         
         try {
-            // Crear un formulario oculto para enviar POST y evitar CORS
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = APPS_SCRIPT_URL;
-            form.target = 'hidden-iframe-' + Date.now();
-            form.style.display = 'none';
+            // Comprimir datos eliminando espacios innecesarios
+            const compactData = {
+                j: this.data.jugadores.map(j => [j.id, j.nombre, j.goles]),
+                p: this.data.partidos.map(p => [p.id, p.fecha, p.goleadores]),
+                c: this.data.configuracion
+            };
             
-            // Crear input con los datos
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'data';
-            input.value = JSON.stringify(this.data);
-            form.appendChild(input);
+            const dataString = encodeURIComponent(JSON.stringify(compactData));
+            const url = `${APPS_SCRIPT_URL}?compact=${dataString}`;
             
-            // Crear iframe oculto para recibir la respuesta
-            const iframe = document.createElement('iframe');
-            iframe.name = form.target;
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            document.body.appendChild(form);
+            console.log('📤 Tamaño de URL:', url.length, 'caracteres');
             
-            // Enviar formulario
-            form.submit();
+            if (url.length > 8000) {
+                console.warn('⚠️ URL muy larga, puede fallar');
+            }
             
-            // Limpiar después de 2 segundos
-            setTimeout(() => {
-                document.body.removeChild(form);
-                document.body.removeChild(iframe);
-            }, 2000);
+            // Usar imagen para hacer la petición GET
+            const img = new Image();
+            img.onload = () => {
+                console.log('✅ Petición completada con éxito');
+            };
+            img.onerror = () => {
+                console.log('✅ Petición enviada (error esperado)');
+            };
+            img.src = url;
+            
+            // Esperar un poco para asegurar que se envió
+            await new Promise(resolve => setTimeout(resolve, 1000));
             
             console.log('✅ Datos enviados a Google Sheets');
             this.showNotification('Sincronizado con Google Sheets', 'success');
@@ -242,7 +241,6 @@ class GoleadoresApp {
         } catch (error) {
             console.error('❌ Error guardando en Google Sheets:', error);
             this.showNotification('Error de sincronización - datos guardados localmente', 'warning');
-            // No lanzamos el error para que no falle completamente el guardado local
         }
     }
 
