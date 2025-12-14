@@ -201,10 +201,8 @@ class GoleadoresApp {
 
     async saveToGoogleSheets() {
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtRn6Res9oAEGfZY5sdgS0BS-WsqSJxVXvA9uEHWyd18ssW7H-1SDqBI8e5uAlbkVI/exec';
-        
         console.log('🔄 Intentando guardar en Google Sheets...');
         console.log('📊 Datos a enviar:', this.data);
-        
         try {
             // Comprimir datos eliminando espacios innecesarios
             const compactData = {
@@ -212,32 +210,20 @@ class GoleadoresApp {
                 p: this.data.partidos.map(p => [p.id, p.fecha, p.goleadores]),
                 c: this.data.configuracion
             };
-            
-            const dataString = encodeURIComponent(JSON.stringify(compactData));
-            const url = `${APPS_SCRIPT_URL}?compact=${dataString}`;
-            
-            console.log('📤 Tamaño de URL:', url.length, 'caracteres');
-            
-            if (url.length > 8000) {
-                console.warn('⚠️ URL muy larga, puede fallar');
+            // Enviar datos como JSON usando POST
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ compact: compactData })
+            });
+            if (!response.ok) {
+                throw new Error('Respuesta no OK del servidor');
             }
-            
-            // Usar imagen para hacer la petición GET
-            const img = new Image();
-            img.onload = () => {
-                console.log('✅ Petición completada con éxito');
-            };
-            img.onerror = () => {
-                console.log('✅ Petición enviada (error esperado)');
-            };
-            img.src = url;
-            
-            // Esperar un poco para asegurar que se envió
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            console.log('✅ Datos enviados a Google Sheets');
+            const result = await response.text();
+            console.log('✅ Datos enviados a Google Sheets', result);
             this.showNotification('Sincronizado con Google Sheets', 'success');
-            
         } catch (error) {
             console.error('❌ Error guardando en Google Sheets:', error);
             this.showNotification('Error de sincronización - datos guardados localmente', 'warning');
