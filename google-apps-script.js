@@ -34,6 +34,7 @@ function doGet(e) {
 
 function processData(data) {
   try {
+    Logger.log('Datos recibidos en processData: ' + JSON.stringify(data));
     const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
     // Permitir ambos formatos: antiguo y nuevo (compact)
     let jugadores, partidos, configuracion;
