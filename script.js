@@ -200,7 +200,7 @@ class GoleadoresApp {
     }
 
     async saveToGoogleSheets() {
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtRn6Res9oAEGfZY5sdgS0BS-WsqSJxVXvA9uEHWyd18ssW7H-1SDqBI8e5uAlbkVI/exec';
+        const BACKEND_URL = 'https://backend-goleadores2025.vercel.app/api/guardar';
         console.log('🔄 Intentando guardar en Google Sheets...');
         console.log('📊 Datos a enviar:', this.data);
         try {
@@ -211,7 +211,7 @@ class GoleadoresApp {
                 c: this.data.configuracion
             };
             // Enviar datos como JSON usando POST
-            const response = await fetch(APPS_SCRIPT_URL, {
+            const response = await fetch(BACKEND_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
