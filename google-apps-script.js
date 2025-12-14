@@ -35,26 +35,34 @@ function doGet(e) {
 function processData(data) {
   try {
     const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
-    
+    // Permitir ambos formatos: antiguo y nuevo (compact)
+    let jugadores, partidos, configuracion;
+    if (data.compact) {
+      // Nuevo formato: compact
+      jugadores = (data.compact.j || []).map(j => ({ id: j[0], nombre: j[1], goles: j[2] }));
+      partidos = (data.compact.p || []).map(p => ({ id: p[0], fecha: p[1], goleadores: p[2] }));
+      configuracion = data.compact.c || {};
+    } else {
+      // Formato antiguo
+      jugadores = data.jugadores;
+      partidos = data.partidos;
+      configuracion = data.configuracion;
+    }
     // Actualizar jugadores
-    if (data.jugadores) {
-      updateJugadores(spreadsheet, data.jugadores);
+    if (jugadores) {
+      updateJugadores(spreadsheet, jugadores);
     }
-    
     // Actualizar partidos
-    if (data.partidos) {
-      updatePartidos(spreadsheet, data.partidos);
+    if (partidos) {
+      updatePartidos(spreadsheet, partidos);
     }
-    
     // Actualizar configuración
-    if (data.configuracion) {
-      updateConfiguracion(spreadsheet, data.configuracion);
+    if (configuracion) {
+      updateConfiguracion(spreadsheet, configuracion);
     }
-    
     return ContentService
       .createTextOutput(JSON.stringify({success: true, message: 'Datos actualizados correctamente'}))
       .setMimeType(ContentService.MimeType.JSON);
-      
   } catch (error) {
     return ContentService
       .createTextOutput(JSON.stringify({success: false, error: error.toString()}))
